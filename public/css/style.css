@@ -1,0 +1,21 @@
+div#content {
+	margin: 0px auto;
+}
+
+div#output,textarea {
+	padding: 5px;
+	margin: 10px;
+	width: 500px;
+	background-color: gray;
+	border: 1px solid black;
+	color: white;
+}
+
+div#input {
+}
+
+body {
+	text-align: center;
+}
+
+
