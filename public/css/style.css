@@ -14,6 +14,23 @@ div#output,textarea {
 div#input {
 }
 
+div#links {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	color: #333;
+}
+
+div#links a {
+	color: #aaa;
+	text-decoration: none;
+}
+
+div#links a:hover {
+	color: #333;
+	text-decoration: none;
+}
+
 body {
 	text-align: center;
 }
