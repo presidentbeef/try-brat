@@ -18,7 +18,7 @@ class BratJob
 			#{code}
 		}()
 		p "-" * 40
-		p "Return value: \#{result$}"
+		p "Return value: \#{->result$}"
 		BRAT
 
 		Shell.new.transact do
