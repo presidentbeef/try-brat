@@ -1,5 +1,5 @@
 require "sinatra"
-require "index"
+require "./index"
 
 set :environment, :production
 run Sinatra::Application
