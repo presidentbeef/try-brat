@@ -1,6 +1,21 @@
 require "rubygems"
 require "sinatra"
+require "shell"
 require_relative "brat_job"
+
+def run_brat code
+  code = <<-BRAT
+  result$ = {
+  #{code}
+  }()
+  p "-" * 40
+  p "Return value: \#{->result$}"
+  BRAT
+
+  Shell.new.transact do
+    echo(code) | brat("-")
+  end.to_s
+end
 
 get '/' do
 	erb :index
@@ -40,4 +55,12 @@ get '/job/:code_id/result' do
 	else
 		"No such job!"
 	end
+end
+
+post '/run' do
+  if params[:code] and not params[:code].empty?
+    run_brat params[:code]
+  else
+    "No code given: #{params[:code]}"
+  end
 end
