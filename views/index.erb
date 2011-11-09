@@ -18,15 +18,15 @@
 		<form id="code_box" >
 			<textarea title="Code goes in here" id="program" cols=50 rows=20></textarea>
 			<br />
-			<input type="submit" value="    Try it!    " />
+      <a style="font-weight: bold; font-size: 14;text-decoration:none; border: 1px solid black; background: #EEE; padding: 3px; " href="#" onclick="submit_code('#program', '#result')">Try it!</a>
 		</form>
 		</div>
 		<br />
-		<textarea id="result" title="Result comes out here" cols=50 rows=20></textarea>
+		<div id="output"><pre id="result"></pre></div>
 	</div>
 	</body>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.7.min.js"></script>
 	<script src="/js/jquery.toggleformtext.compressed.js"></script>
 	<script src="/js/updater.js"></script>
 	<script src="/js/try.js"></script>

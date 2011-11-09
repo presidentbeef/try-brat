@@ -1,35 +1,11 @@
-function get_result(result_id) {
-		$.get("/job/" + result_id + "/result", function(response, status) {
-			if(response == "") response = "Execution timed out."
-			$("#result").val(response);
-		});
-		$(':submit').attr('disabled', '');
-}
-
-function wait_on(result_id) {
-		var url = "/job/" + result_id + "/status";
-
-		$.poll(function(retry){
-			$.get(url, function(response, status) {
-				if (response != 'finished')
-					retry();
-				else
-					get_result(result_id);
-				})
-			})
-}
-
-function submit_code() {
-		var code = $("#program").val();
-		if(code.replace(/\s/g,"") == "") return;
-		$(':submit').attr('disabled', 'disabled');
-		$.post("/", { program: code }, function(data) {
-			$("#result").text("[Running]");
-			wait_on(data);
+function submit_code(code_box, result_box) {
+ 		var code = $(code_box).val();
+		if(code.replace(/\s/g,"") == "") { $(result_box).text("No code!"); return; }
+		$(result_box).text("[Running]");
+		return $.post("/run", { code: code }, function(data) {
+      if(data == "")
+  			$(result_box).text("Execution failed (probably timed out).");
+      else
+  			$(result_box).text(data);
 		})
 }
-
-$("#code_box").submit(function() {
-	submit_code();
-	return false;
-})
