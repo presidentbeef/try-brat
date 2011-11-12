@@ -10,20 +10,142 @@
 			<div id="links">
 				<a href="http://brat-lang.org">Home</a>
 				|
-				<a target="_blank" href="http://rosettacode.org/wiki/Brat">Examples</a>
+				<a target="_blank" href="http://rosettacode.org/wiki/Brat">More Examples</a>
 			</div>
 		<img src="images/try-brat.png" />
 		<br/>
+    <div>
+      <div id="examples" style="width: 200px">
+        <h2>Examples</h2>
+        <a href="#" onclick="set_program('help')">Help</a><br>
+        <a href="#" onclick="set_program('helloworld')">Hello World</a><br>
+        <a href="#" onclick="set_program('countdown')">Count Down</a><br>
+        <a href="#" onclick="set_program('reverse')">String Reverse</a><br>
+        <a href="#" onclick="set_program('evens')">Evens Only</a><br>
+        <a href="#" onclick="set_program('factorial')">Factorial</a><br>
+        <a href="#" onclick="set_program('addit')">Higher-order Functions</a><br>
+        <a href="#" onclick="set_program('cards')">Cards</a><br>
+      </div>
+    </div>
+
 		<div id ="input">
 		<form id="code_box" >
-			<textarea title="Code goes in here" id="program" cols=50 rows=20></textarea>
+			<textarea title="#  Code goes in here  #" id="program" cols=50 rows=20></textarea>
 			<br />
       <a style="font-weight: bold; font-size: 14;text-decoration:none; border: 1px solid black; background: #EEE; padding: 3px; " href="#" onclick="submit_code('#program', '#result')">Try it!</a>
+      <a style="font-weight: bold; font-size: 14;text-decoration:none; border: 1px solid black; background: #EEE; padding: 3px; margin-left: 30px; " href="#" onclick="clear_it()">Reset!</a>
 		</form>
-		</div>
+		</div>  
+   
 		<br />
 		<div id="output"><pre id="result"></pre></div>
 	</div>
+
+  <div style="display:none">
+<pre id="helloworld">
+# Print "Hello, world!"
+
+p "Hello, world!"
+</pre>
+<pre id="factorial">
+# Compute a factorial
+
+factorial = { x |
+  true? x == 0 1 { x * factorial(x - 1)}
+}
+
+factorial 10
+</pre>
+<pre id="addit">
+# Use a function as an argument to another function
+
+add = { a, b | a + b }
+ 
+doit = { f, a, b | f a, b }
+ 
+doit ->add 1 2
+</pre>
+<pre id="reverse">
+# Reverse a string
+
+"stop".reverse
+</pre>
+<pre id="countdown">
+# Count down from 10 to 1
+
+10.to 1 { i | p i }
+</pre>
+<pre id="evens">
+# Select only even numbers from an array
+
+1.to(10).select { x | x % 2 == 0 }
+</pre>
+<pre id="cards">
+# Simulate a deck of cards
+
+#Card object
+card = object.new
+
+card.init = { pip, suit |
+  my.pip = pip
+  my.suit = suit
+}
+
+card.suits = [ :Clubs :Hearts :Spades :Diamonds ]
+card.pips = 2.to(10) + [ :Jack :Queen :King :Ace ]
+
+card.prototype.to_s = {
+  "#{my.pip} of #{my.suit}"
+}
+
+# Deck object
+deck = object.new
+
+deck.init = {
+  cards = []
+  card.suits.each { suit |
+    card.pips.each { pip |
+      cards << card.new pip, suit
+    }
+  }
+
+  my.cards = cards
+}
+
+deck.prototype [
+  shuffle: 
+  {
+    my.cards.shuffle!
+    my
+  }
+
+  deal: { num |
+    my.cards.pop num
+  }
+
+  to_s: {
+    my.cards.to_s
+  }
+]
+
+d = deck.new.shuffle
+p "Number of cards in deck: #{d.cards.length}"
+p "Hand of five cards: #{d.deal(5)}"
+p "Number of cards remaining: #{d.cards.length}"
+</pre>
+<pre id="help">
+#*
+
+ Type Brat code into the this box and click "Try it!"
+
+ Output from the program is shown above the dashed line. The return value of the evaluated code is shown below the line.
+
+ Interactive programs are not possible at this time.
+
+*#
+
+</pre>
+  </div>
 	</body>
 
 	<script src="http://code.jquery.com/jquery-1.7.min.js"></script>

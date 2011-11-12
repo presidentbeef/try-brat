@@ -43,3 +43,21 @@ body {
 	font-family: Ariel, Verdana, sans-serif;
 	font-size: 11pt;
 }
+
+div#examples {
+  text-align: left;
+  position: absolute;
+  left: 10px;
+}
+
+div#examples a {
+  text-decoration: none;
+}
+
+div#examples a:hover {
+  text-decoration: underline;
+}
+
+div#examples a:active {
+  font-weight: bold;
+}

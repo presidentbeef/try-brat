@@ -9,3 +9,12 @@ function submit_code(code_box, result_box) {
   			$(result_box).text(data);
 		})
 }
+
+function set_program(program) {
+  $("#program").val($("#" + program).text());
+}
+
+function clear_it() {
+  $("#program").val('');
+  $("#result").text('');
+}
