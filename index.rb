@@ -1,6 +1,7 @@
 require "rubygems"
 require "sinatra"
 require "shell"
+require "base64"
 require_relative "brat_job"
 
 def run_brat code
@@ -62,5 +63,13 @@ post '/run' do
     run_brat params[:code]
   else
     "No code given: #{params[:code]}"
+  end
+end
+
+get '/run/:code' do
+  if params[:code] and not params[:code].empty?
+    run_brat Base64.decode64 params[:code]
+  else
+    "No code given"
   end
 end
