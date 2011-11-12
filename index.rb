@@ -1,8 +1,9 @@
 require "rubygems"
 require "sinatra"
+require "sinatra/streaming"
 require "shell"
 require "base64"
-require_relative "brat_job"
+require_relative "github_hook"
 
 def run_brat code
   code = <<-BRAT
@@ -22,42 +23,6 @@ get '/' do
 	erb :index
 end
 
-post '/' do
-	code = params[:program]
-	job = BratJob.enqueue code
-	job.meta_id
-end
-
-get '/job/:code_id/status' do
-	job = BratJob.get_meta(params[:code_id])
-	if job
-		if job.succeeded?
-			"finished"
-		elsif job.failed?
-			"failed"
-		else
-			"working"
-		end
-	else
-		"invalid"
-	end
-end
-
-get '/job/:code_id/result' do
-	job = BratJob.get_meta(params[:code_id])
-	if job
-		if job.succeeded?
-			job.result
-		elsif job.failed?
-			"[Failed]"
-		else
-			"[Processing]"
-		end
-	else
-		"No such job!"
-	end
-end
-
 post '/run' do
   if params[:code] and not params[:code].empty?
     run_brat params[:code]
@@ -71,5 +36,21 @@ get '/run/:code' do
     run_brat Base64.decode64 params[:code]
   else
     "No code given"
+  end
+end
+
+post "/tests/#{GITHUB_HOOK}" do
+  fork do
+    exec "/var/www/try-brat/test_brat.sh"
+  end
+
+  "Alright"
+end
+
+get '/status' do
+  if params[:callback]
+    "#{params[:callback]}( { status: #{File.read("/var/www/try-brat/tmp/brat/status").gsub("\n", "").inspect } })"
+  else
+    "Error"
   end
 end
