@@ -50,6 +50,8 @@ post "/tests/#{GITHUB_HOOK}" do
 end
 
 get '/status' do
+  headers "Content-Type" => "application/javascript"
+
   if params[:callback]
     "#{params[:callback]}( { status: #{File.read("/var/www/try-brat/tmp/brat/status").gsub("\n", "").inspect } })"
   else
