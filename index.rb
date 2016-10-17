@@ -5,6 +5,8 @@ require "shell"
 require "base64"
 require_relative "github_hook"
 
+Shell.def_system_command :brat, "/home/bratuser/bin/brat"
+
 def run_brat code
   code = <<-BRAT
   result$ = {
