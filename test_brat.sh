@@ -1,6 +1,8 @@
 #!/bin/bash
 cd /var/www/try-brat/tmp/brat
-git pull
+git fetch
+git reset --hard origin/master
+touch stdlib/*.brat
 
 sh ./build.sh &> output
 
