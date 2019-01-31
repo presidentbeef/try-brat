@@ -9,12 +9,18 @@ Shell.def_system_command :brat, "/home/bratuser/bin/brat"
 
 def run_brat code
   code = <<-BRAT
-  result$ = {
-  #{code}
-  }()
-  p "-" * 40
-  p "Return value: \#{->result$}"
+includes :eval :base64 "parser/brat2lua"
+
+decoded = base64.decode "#{Base64.encode64(code).strip}"
+parsed = brat2lua.start_interactive.run decoded
+result = eval.run_parsed parsed
+p "-" * 40
+p "Return value: \#{->result}"
   BRAT
+
+  File.open("/var/www/try-brat/logit", "w") do |f|
+    f.puts code
+  end
 
   Shell.new.transact do
     echo(code) | brat("-")
