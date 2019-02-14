@@ -1,9 +1,6 @@
-require "rubygems"
-require "sinatra"
-require "sinatra/streaming"
 require "shell"
 require "base64"
-require_relative "github_hook"
+require "sinatra"
 
 Shell.def_system_command :brat, "/home/bratuser/bin/brat"
 
@@ -17,10 +14,6 @@ result = eval.run_parsed parsed
 p "-" * 40
 p "Return value: \#{->result}"
   BRAT
-
-  File.open("/var/www/try-brat/logit", "w") do |f|
-    f.puts code
-  end
 
   Shell.new.transact do
     echo(code) | brat("-")
@@ -44,23 +37,5 @@ get '/run/:code' do
     run_brat Base64.decode64 params[:code]
   else
     "No code given"
-  end
-end
-
-post "/tests/#{GITHUB_HOOK}" do
-  fork do
-    exec "/var/www/try-brat/test_brat.sh"
-  end
-
-  "Alright"
-end
-
-get '/status' do
-  headers "Content-Type" => "application/javascript"
-
-  if params[:callback]
-    "#{params[:callback]}( { status: #{File.read("/var/www/try-brat/tmp/brat/status").gsub("\n", "").inspect } })"
-  else
-    "Error"
   end
 end
