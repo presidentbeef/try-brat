@@ -5,7 +5,7 @@ div#content {
 div#output,textarea {
 	padding: 5px;
 	margin: 10px auto;
-	width: 500px;
+	width: 50%;
 	background-color: gray;
 	border: 1px solid black;
 	color: white;
