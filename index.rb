@@ -2,13 +2,13 @@ require "shell"
 require "base64"
 require "sinatra"
 
-Shell.def_system_command :brat, "/home/bratuser/bin/brat"
+Shell.def_system_command :brat, "/home/brat/run_brat.sh"
 
 def run_brat code
   code = <<-BRAT
 includes :eval :base64 "parser/brat2lua"
 
-decoded = base64.decode "#{Base64.encode64(code).strip}"
+decoded = base64.decode "#{Base64.encode64(code).strip.gsub("\n", "")}"
 parsed = brat2lua.start_interactive.run decoded
 result = eval.run_parsed parsed
 p "-" * 40
@@ -21,7 +21,7 @@ p "Return value: \#{->result}"
 end
 
 get '/' do
-	erb :index
+  erb :index
 end
 
 post '/run' do
